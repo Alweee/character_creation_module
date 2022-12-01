@@ -58,6 +58,48 @@ class Healer(Character):
     SPECIAL_SKILL = 'Защита'
 
 
-warrior = Warrior('Кодослав')
-print(warrior)
-print(warrior.attack())
+def start_training(character):
+    """
+    Принимает на вход имя и класс персонажа.
+    Возвращает сообщения о результатах цикла тренировки персонажа.
+    """
+    commands = {'attack': character.attack(),
+                'defence': character.defence(),
+                'special': character.special()}
+
+    print('Потренируйся управлять своими навыками.')
+    print('Введи одну из команд: attack — чтобы атаковать противника, '
+          'defence — чтобы блокировать атаку противника или '
+          'special — чтобы использовать свою суперсилу.')
+    print('Если не хочешь тренироваться, введи команду skip.')
+    cmd = None
+    while cmd != 'skip':
+        cmd = input('Введи команду: ')
+        if cmd in commands:
+            print(commands[cmd])
+    return 'Тренировка окончена.'
+
+
+def choice_char_class(char_name: str) -> Character:
+    """
+    Возвращает строку с выбранным
+    классом персонажа.
+    """
+    game_classes = {'warrior': Warrior, 'mage': Mage, 'healer': Healer}
+
+    approve_choice: str = None
+
+    while approve_choice != 'y':
+        selected_class = input('Введи название персонажа, '
+                               'за которого хочешь играть: Воитель — warrior, '
+                               'Маг — mage, Лекарь — healer: ')
+        char_class: Character = game_classes[selected_class](char_name)
+        print(char_class)
+        approve_choice = input('Нажми (Y), чтобы подтвердить выбор, '
+                               'или любую другую кнопку, '
+                               'чтобы выбрать другого персонажа ').lower()
+    return char_class
+
+
+char_class = choice_char_class(input('Введи имя персонажа: '))
+start_training(char_class)
